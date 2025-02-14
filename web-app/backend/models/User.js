@@ -1,8 +1,8 @@
-import pool from "../config/db";
+import pool from "../config/db.js";
 
 export const createUser = async (username, hashedPassword)=>{
     const result = await pool.query(
-        "INSERT INT users (username, password) VALUES ($1, $2) RETURNING id",
+        "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
         [username, hashedPassword]
     );
     return result.rows[0].id;
