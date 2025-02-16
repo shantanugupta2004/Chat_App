@@ -1,3 +1,4 @@
+import pool from "../config/db.js";
 import { getMessages, saveMessage } from "../models/Message.js";
 
 export const sendMessages = async (req, res) => {
@@ -31,5 +32,21 @@ export const fetchMessages = async (req, res) => {
         res.json(messages);
     } catch (error) {
         res.status(500).json({ error: "Failed to retrieve messages" });
+    }
+};
+
+export const deleteMessage = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const result = await pool.query(
+            "DELETE FROM messages WHERE id = $1 AND username = $2 RETURNING *",
+            [id, req.user.username]
+        );
+        if(result.rowCount === 0){
+            return res.status(403).json({error : "Unauthorized to delete this message"});
+        }
+        res.json({message: "Message deleted successfully"});
+    } catch (error) {
+        res.status(500).json({error: "Error deleting message"});
     }
 };
