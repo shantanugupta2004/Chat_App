@@ -9,6 +9,8 @@ services:
       - ./backend/.env
     depends_on:
       - db
+    environment:
+      - DATABASE_URL=postgres://chat_admin:qwerty@db:5432/chatdb 
     restart: always
 
   frontend:
@@ -17,14 +19,21 @@ services:
       - "4173:4173"
     depends_on:
       - backend
+    environment:
+      - VITE_API_URL=http://localhost:5000
     restart: always
 
   db:
     image: postgres:15-alpine
     restart: always
     ports:
-      - "5432:5432"
+      - "5432:5432"  
     environment:
       POSTGRES_USER: chat_admin
       POSTGRES_PASSWORD: qwerty
       POSTGRES_DB: chatdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

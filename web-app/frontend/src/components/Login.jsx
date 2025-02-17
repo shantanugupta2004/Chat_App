@@ -15,9 +15,9 @@ const Login = () => {
         e.preventDefault();
         try {
             const { data } = await API.post("/auth/login", form);
-            localStorage.setItem("token", data.token); // ✅ Store token
-            localStorage.setItem("username", data.username); // ✅ Store username
-            navigate("/chat"); // Redirect to chat page
+            localStorage.setItem("token", data.token); 
+            localStorage.setItem("username", data.username); 
+            navigate("/chat");
         } catch (err) {
             alert("Login failed!");
             setError("Login failed");
